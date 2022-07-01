@@ -13,11 +13,23 @@ enum ErrorsOfRandomNumberClass: Error {
 
 
 struct Model {
-    let imageTitle: String
-    let image: UIImage?
+    var imageTitle: String
+    var image: UIImage?
     
     init() {
         let imageNumber = Int.random(in: 1...4)
+        if let image = UIImage(named: "\(imageNumber)") {
+            self.image = image
+            self.imageTitle = "Картинка \(imageNumber)"
+        }
+        else {
+            self.imageTitle = "Smth went wrong"
+            self.image = UIImage(named: "ErrorCase")
+        }
+    }
+    
+    mutating func newPic() {
+        let imageNumber = Int.random(in: 1...3)
         if let image = UIImage(named: "\(imageNumber)") {
             self.image = image
             self.imageTitle = "Картинка \(imageNumber)"
