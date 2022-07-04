@@ -15,9 +15,12 @@ enum ErrorsOfRandomNumberClass: Error {
 struct Model {
     var imageTitle: String
     var image: UIImage?
+    var currentNameOfImage: String?
+    var pressCount: Int = 0
     
     init() {
-        let imageNumber = Int.random(in: 1...4)
+        let imageNumber = Int.random(in: 1...3)
+        currentNameOfImage = String(imageNumber)
         if let image = UIImage(named: "\(imageNumber)") {
             self.image = image
             self.imageTitle = "Картинка \(imageNumber)"
@@ -29,7 +32,11 @@ struct Model {
     }
     
     mutating func newPic() {
-        let imageNumber = Int.random(in: 1...3)
+        var imageNumber = Int.random(in: 1...3)
+        while self.currentNameOfImage == String(imageNumber) {
+            imageNumber = Int.random(in: 1...3)
+        }
+        self.currentNameOfImage = String(imageNumber)
         if let image = UIImage(named: "\(imageNumber)") {
             self.image = image
             self.imageTitle = "Картинка \(imageNumber)"
@@ -37,6 +44,17 @@ struct Model {
         else {
             self.imageTitle = "Smth went wrong"
             self.image = UIImage(named: "ErrorCase")
+        }
+    }
+    
+    mutating func tenPress() {
+        pressCount += 1
+        if pressCount % 10 == 0 {
+            self.image = UIImage(named: "LookingAggressively")
+            self.imageTitle = "Прекроти!"
+            pressCount = 0
+        } else {
+            self.newPic()
         }
     }
 }

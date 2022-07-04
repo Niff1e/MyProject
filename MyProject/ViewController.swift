@@ -18,15 +18,10 @@ class ViewController: UIViewController {
     var pressCount = 0
     
     @IBAction func changePicPress(_ sender: Any) {
-        pressCount += 1
-        if pressCount % 10 == 0 {
-            imageView.image = UIImage(named: "ErrorCase")
-            titleLabel.text = "Прекроти!"
-        } else {
-            model.newPic()
-            imageView.image = model.image
-            titleLabel.text = model.imageTitle
-        }
+        model.tenPress()
+        
+        imageView.image = model.image
+        titleLabel.text = model.imageTitle
     }
     
     override func viewDidLoad() {
@@ -34,8 +29,5 @@ class ViewController: UIViewController {
         
         imageView.image = model.image
         titleLabel.text = model.imageTitle
-        
-        changePicButton.backgroundColor = .green
-        changePicButton.setTitleColor(.black, for: .normal)
     }
 }
