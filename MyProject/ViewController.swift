@@ -10,24 +10,23 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var model = Model()
+    var delegate: ModelDelegate?
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var changePicButton: UIButton!
-    var pressCount = 0
     
     @IBAction func changePicPress(_ sender: Any) {
-        model.tenPress()
+        delegate?.tenPress()
         
-        imageView.image = model.image
-        titleLabel.text = model.imageTitle
+        imageView.image = delegate?.image
+        titleLabel.text = delegate?.imageTitle
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageView.image = model.image
-        titleLabel.text = model.imageTitle
+        delegate = Model()
+        imageView.image = delegate?.image
+        titleLabel.text = delegate?.imageTitle
     }
 }

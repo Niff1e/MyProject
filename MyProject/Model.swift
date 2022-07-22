@@ -7,12 +7,16 @@
 
 import UIKit
 
-enum ErrorsOfRandomNumberClass: Error {
-    case imageNotFound
+protocol ModelDelegate {
+    var imageTitle: String {get set}
+    var image: UIImage? {get set}
+    var currentNameOfImage: String? {get}
+    var pressCount: Int {get}
+    mutating func newPic()
+    mutating func tenPress()
 }
 
-
-struct Model {
+struct Model: ModelDelegate {
     var imageTitle: String
     var image: UIImage?
     var currentNameOfImage: String?
