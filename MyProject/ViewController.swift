@@ -10,24 +10,27 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var model = Model()
+    var doSomethig: (()-> Void)?
     
+    let model = Model()
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var changePicButton: UIButton!
-    var pressCount = 0
     
-    @IBAction func changePicPress(_ sender: Any) {
-        model.tenPress()
-        
+    func doOwnself() {
+        let controller = model.callback()
+        if let doSometing = controller.doSomethig {
+            doSometing()
+        }
         imageView.image = model.image
         titleLabel.text = model.imageTitle
+    }
+    @IBAction func changePicPress(_ sender: Any) {
+        doOwnself()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        imageView.image = model.image
-        titleLabel.text = model.imageTitle
+        doOwnself()
     }
 }

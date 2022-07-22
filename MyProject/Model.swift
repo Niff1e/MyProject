@@ -12,7 +12,7 @@ enum ErrorsOfRandomNumberClass: Error {
 }
 
 
-struct Model {
+class Model {
     var imageTitle: String
     var image: UIImage?
     var currentNameOfImage: String?
@@ -31,7 +31,7 @@ struct Model {
         }
     }
     
-    mutating func newPic() {
+    func newPic() {
         var imageNumber = Int.random(in: 1...3)
         while self.currentNameOfImage == String(imageNumber) {
             imageNumber = Int.random(in: 1...3)
@@ -47,7 +47,7 @@ struct Model {
         }
     }
     
-    mutating func tenPress() {
+    func tenPress() {
         pressCount += 1
         if pressCount % 10 == 0 {
             self.image = UIImage(named: "LookingAggressively")
@@ -56,5 +56,13 @@ struct Model {
         } else {
             self.newPic()
         }
+    }
+    
+    func callback() -> ViewController {
+        let controller = ViewController()
+        controller.doSomethig = { [weak self] in
+            self!.tenPress()
+        }
+        return controller
     }
 }
