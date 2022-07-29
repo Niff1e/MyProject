@@ -12,11 +12,12 @@ enum ErrorsOfRandomNumberClass: Error {
 }
 
 
-class Model {
+public class Model {
     var imageTitle: String
     var image: UIImage?
     var currentNameOfImage: String?
     var pressCount: Int = 0
+    var doSomething: (() -> Void)?
     
     init() {
         let imageNumber = Int.random(in: 1...3)
@@ -56,13 +57,6 @@ class Model {
         } else {
             self.newPic()
         }
-    }
-    
-    func callback() -> ViewController {
-        let controller = ViewController()
-        controller.doSomethig = { [weak self] in
-            self!.tenPress()
-        }
-        return controller
+        doSomething?()
     }
 }
