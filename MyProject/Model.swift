@@ -8,15 +8,10 @@
 import UIKit
 
 protocol ModelDelegate {
-    var imageTitle: String {get set}
-    var image: UIImage? {get set}
-    var currentNameOfImage: String? {get}
-    var pressCount: Int {get}
-    mutating func newPic()
-    mutating func tenPress()
+    func notification()
 }
 
-struct Model: ModelDelegate {
+class Model: ModelDelegate {
     var imageTitle: String
     var image: UIImage?
     var currentNameOfImage: String?
@@ -35,7 +30,7 @@ struct Model: ModelDelegate {
         }
     }
     
-    mutating func newPic() {
+    func newPic() {
         var imageNumber = Int.random(in: 1...3)
         while self.currentNameOfImage == String(imageNumber) {
             imageNumber = Int.random(in: 1...3)
@@ -51,7 +46,7 @@ struct Model: ModelDelegate {
         }
     }
     
-    mutating func tenPress() {
+    func tenPress() {
         pressCount += 1
         if pressCount % 10 == 0 {
             self.image = UIImage(named: "LookingAggressively")
@@ -60,5 +55,9 @@ struct Model: ModelDelegate {
         } else {
             self.newPic()
         }
+    }
+    
+    func notification() {
+        tenPress()
     }
 }
