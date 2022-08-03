@@ -7,15 +7,15 @@
 
 import UIKit
 
-protocol ModelDelegate {
-    func notification()
-}
 
-class Model: ModelDelegate {
-    var imageTitle: String
-    var image: UIImage?
-    var currentNameOfImage: String?
-    var pressCount: Int = 0
+
+public class Model {
+    public var imageTitle: String
+    public var image: UIImage?
+    private var currentNameOfImage: String?
+    private var pressCount: Int = 0
+    
+    weak var delegate: ViewControllerDelegate?
     
     init() {
         let imageNumber = Int.random(in: 1...3)
@@ -55,9 +55,6 @@ class Model: ModelDelegate {
         } else {
             self.newPic()
         }
-    }
-    
-    func notification() {
-        tenPress()
+        delegate?.notification()
     }
 }

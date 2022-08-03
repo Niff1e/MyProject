@@ -7,18 +7,20 @@
 
 import UIKit
 
+protocol ViewControllerDelegate: AnyObject  {
+    func notification()
+}
 
-class ViewController: UIViewController {
+
+class ViewController: UIViewController, ViewControllerDelegate {
     
-    var delegate: ModelDelegate?
     let model = Model()
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     
     @IBAction func changePicPress(_ sender: Any) {
-        delegate?.notification()
-        setupModel()
+        model.tenPress()
     }
     
     func setupModel() {
@@ -26,11 +28,14 @@ class ViewController: UIViewController {
         titleLabel.text = model.imageTitle
     }
     
+    func notification() {
+        setupModel()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.delegate = model
-        delegate?.notification()
-        setupModel()
+        model.delegate = self
+        model.tenPress()
     }
 }
