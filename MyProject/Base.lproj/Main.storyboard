@@ -72,21 +72,20 @@
         <!--Picture View Controller-->
         <scene sceneID="fBE-CQ-35g">
             <objects>
-                <viewController storyboardIdentifier="PictureViewController" id="I3J-l1-Oaz" customClass="PictureViewController" customModule="MyProject" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="xDi-nX-e9k">
+                <viewController storyboardIdentifier="PictureViewController" wantsFullScreenLayout="YES" id="I3J-l1-Oaz" customClass="PictureViewController" customModule="MyProject" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleAspectFit" id="xDi-nX-e9k">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="COX-4w-vNw">
-                                <rect key="frame" x="64" y="313" width="300" height="300"/>
+                                <rect key="frame" x="0.0" y="263" width="428" height="400"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="EsA-S7-I4a"/>
-                                    <constraint firstAttribute="height" constant="300" id="dPv-r0-aHS"/>
+                                    <constraint firstAttribute="height" constant="400" id="4o1-au-f48"/>
                                 </constraints>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="LvM-os-4Z8" appends="YES" id="fUI-C0-8eI"/>
                                     <outletCollection property="gestureRecognizers" destination="4JN-MB-ViY" appends="YES" id="iNm-2R-6N9"/>
+                                    <outletCollection property="gestureRecognizers" destination="o3J-4H-act" appends="YES" id="eSF-Tq-DlK"/>
                                 </connections>
                             </imageView>
                         </subviews>
@@ -94,25 +93,35 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="COX-4w-vNw" firstAttribute="trailing" secondItem="vaR-Jg-JW0" secondAttribute="trailing" id="Jmy-UA-aBS"/>
+                            <constraint firstItem="COX-4w-vNw" firstAttribute="leading" secondItem="vaR-Jg-JW0" secondAttribute="leading" id="TcW-di-G6u"/>
                             <constraint firstItem="COX-4w-vNw" firstAttribute="centerY" secondItem="xDi-nX-e9k" secondAttribute="centerY" id="cAQ-lG-lxP"/>
                             <constraint firstItem="COX-4w-vNw" firstAttribute="centerX" secondItem="xDi-nX-e9k" secondAttribute="centerX" id="hlb-h1-Ouc"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="4X4-a1-JG2" appends="YES" id="5lU-aW-J2C"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="imageView" destination="COX-4w-vNw" id="d21-F4-dE3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="okU-wM-fqR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="LvM-os-4Z8">
-                    <connections>
-                        <action selector="scaling:" destination="I3J-l1-Oaz" id="eaF-wb-KpJ"/>
-                    </connections>
-                </tapGestureRecognizer>
                 <pinchGestureRecognizer id="4JN-MB-ViY">
                     <connections>
                         <action selector="pinchAction:" destination="I3J-l1-Oaz" id="ooF-U1-bXC"/>
                     </connections>
                 </pinchGestureRecognizer>
+                <tapGestureRecognizer id="4X4-a1-JG2">
+                    <connections>
+                        <action selector="dismissView:" destination="I3J-l1-Oaz" id="hWj-bI-03U"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="o3J-4H-act">
+                    <connections>
+                        <action selector="panAction:" destination="I3J-l1-Oaz" id="3s0-j7-saU"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="553.73831775700933" y="64.794816414686835"/>
         </scene>

@@ -23,11 +23,13 @@ class ViewController: UIViewController, ViewControllerDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         
         guard let pictureViewController = storyboard.instantiateViewController(withIdentifier: "PictureViewController") as? PictureViewController else { return }
-        pictureViewController.image = model.image
         
-        //present(pictureViewController, animated: true) {
-         //   pictureViewController.imageView = self.imageView
-        //}
+        pictureViewController.model.image = model.image
+        
+        //show(pictureViewController, sender: nil)
+        
+        pictureViewController.modalPresentationStyle = .fullScreen
+        
         present(pictureViewController, animated: true, completion: nil)
     }
     
