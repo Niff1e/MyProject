@@ -7,39 +7,26 @@
 
 import UIKit
 
-class PictureViewController: UIViewController {
+class PictureViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
-    var model = PictureControllerModel()
-    
-    @IBAction func dismissView(_ sender: UITapGestureRecognizer) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func pinchAction(_ sender: UIPinchGestureRecognizer) {
-        if let view = sender.view {
-            view.transform = view.transform.scaledBy(x: sender.scale, y: sender.scale)
-            sender.scale = 1
-        }
-    }
-    
-    @IBAction func panAction(_ sender: UIPanGestureRecognizer) {
-        let translation = sender.translation(in: self.view)
-        if let view = sender.view {
-            view.center = CGPoint(x: view.center.x + translation.x,
-                                  y: view.center.y + translation.y)
-        }
-        sender.setTranslation(CGPoint.zero, in: self.view)
-    }
+    var model: PictureControllerModel!
     
     func setupModel() {
         imageView.image = model.image
     }
     
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupModel()
+        self.scrollView.delegate = self
+        self.scrollView.minimumZoomScale = 1.0
+        self.scrollView.maximumZoomScale = 5.0
     }
 }
