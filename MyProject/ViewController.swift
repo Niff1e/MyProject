@@ -7,12 +7,8 @@
 
 import UIKit
 
-protocol ViewControllerDelegate: AnyObject  {
-    func notification()
-}
 
-
-class ViewController: UIViewController, ViewControllerDelegate {
+class ViewController: UIViewController {
     
     let model = Model()
     
@@ -37,14 +33,12 @@ class ViewController: UIViewController, ViewControllerDelegate {
         titleLabel.text = model.imageTitle
     }
     
-    func notification() {
-        setupModel()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        model.delegate = self
+        model.doSometing = { [weak self] in
+            self?.setupModel()
+        }
         model.tenPress()
     }
 }

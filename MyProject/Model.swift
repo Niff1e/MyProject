@@ -14,8 +14,7 @@ public class Model {
     public var image: UIImage?
     private var currentNameOfImage: String?
     private var pressCount: Int = 0
-    
-    weak var delegate: ViewControllerDelegate?
+    var doSometing: (() -> Void)?
     
     init() {
         let imageNumber = Int.random(in: 1...3)
@@ -55,6 +54,6 @@ public class Model {
         } else {
             self.newPic()
         }
-        delegate?.notification()
+        doSometing?()
     }
 }
