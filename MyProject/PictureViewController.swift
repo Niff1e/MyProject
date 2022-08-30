@@ -7,27 +7,26 @@
 
 import UIKit
 
-class PictureViewController: UIViewController {
+class PictureViewController: UIViewController, UIScrollViewDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
     
-    var image: UIImage?
+    var model: PictureControllerModel!
     
-    @IBAction func dismiss(_ sender: UITapGestureRecognizer) {
-        dismiss(animated: true, completion: nil)
+    func setupModel() {
+        imageView.image = model.image
     }
     
-    
-    @IBAction func pinchAction(_ sender: UIPinchGestureRecognizer) {
-        if let view = sender.view {
-            view.transform = view.transform.scaledBy(x: sender.scale, y: sender.scale)
-            sender.scale = 1
-        }
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        imageView.image = image
+        setupModel()
+        self.scrollView.delegate = self
+        self.scrollView.minimumZoomScale = 1.0
+        self.scrollView.maximumZoomScale = 5.0
     }
 }

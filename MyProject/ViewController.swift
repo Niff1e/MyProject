@@ -15,13 +15,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     
-    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
-        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        
-        guard let pictureViewController = storyboard.instantiateViewController(withIdentifier: "PictureViewController") as? PictureViewController else { return }
-        pictureViewController.image = model.image
-        
-        present(pictureViewController, animated: true, completion: nil)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToPVC" {
+            let pictureVCmodel = PictureControllerModel()
+            pictureVCmodel.image = model.image
+            let newVC = segue.destination as! PictureViewController
+            newVC.model = pictureVCmodel
+        }
     }
     
     @IBAction func changePicPress(_ sender: Any) {
