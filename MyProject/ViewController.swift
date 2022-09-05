@@ -7,35 +7,34 @@
 
 import UIKit
 
-
 class ViewController: UIViewController {
-    
+
     let model = Model()
-    
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToPVC" {
             let pictureVCmodel = PictureControllerModel()
             pictureVCmodel.image = model.image
-            let newVC = segue.destination as! PictureViewController
+            guard let newVC = segue.destination as? PictureViewController else { return }
             newVC.model = pictureVCmodel
         }
     }
-    
+
     @IBAction func changePicPress(_ sender: Any) {
         model.tenPress()
     }
-    
+
     func setupModel() {
         imageView.image = model.image
         titleLabel.text = model.imageTitle
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         model.doSometing = { [weak self] in
             self?.setupModel()
         }
