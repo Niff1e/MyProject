@@ -16,9 +16,9 @@ class ViewController: UIViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToPVC" {
+            guard let newVC = segue.destination as? PictureViewController else { return }
             let pictureVCmodel = PictureControllerModel()
             pictureVCmodel.image = model.image
-            guard let newVC = segue.destination as? PictureViewController else { return }
             newVC.model = pictureVCmodel
         }
     }
