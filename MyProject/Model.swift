@@ -7,28 +7,25 @@
 
 import UIKit
 
-
-
 public class Model {
     public var imageTitle: String
     public var image: UIImage?
     private var currentNameOfImage: String?
     private var pressCount: Int = 0
     var doSometing: (() -> Void)?
-    
+
     init() {
         let imageNumber = Int.random(in: 1...3)
         currentNameOfImage = String(imageNumber)
         if let image = UIImage(named: "\(imageNumber)") {
             self.image = image
             self.imageTitle = "Картинка \(imageNumber)"
-        }
-        else {
+        } else {
             self.imageTitle = "Smth went wrong"
             self.image = UIImage(named: "ErrorCase")
         }
     }
-    
+
     func newPic() {
         var imageNumber = Int.random(in: 1...3)
         while self.currentNameOfImage == String(imageNumber) {
@@ -38,13 +35,12 @@ public class Model {
         if let image = UIImage(named: "\(imageNumber)") {
             self.image = image
             self.imageTitle = "Картинка \(imageNumber)"
-        }
-        else {
+        } else {
             self.imageTitle = "Smth went wrong"
             self.image = UIImage(named: "ErrorCase")
         }
     }
-    
+
     func tenPress() {
         pressCount += 1
         if pressCount % 10 == 0 {
