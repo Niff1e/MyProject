@@ -10,28 +10,14 @@ import UIKit
 public class Model {
     public var imageTitle: String
     public var image: UIImage?
-    private var currentNameOfImage: String?
+    private var currentImageNumber = 0
+    private var imageNumber = 0
     private var pressCount: Int = 0
     var doSometing: (() -> Void)?
 
     init() {
-        let imageNumber = Int.random(in: 1...3)
-        currentNameOfImage = String(imageNumber)
-        if let image = UIImage(named: "\(imageNumber)") {
-            self.image = image
-            self.imageTitle = "Картинка \(imageNumber)"
-        } else {
-            self.imageTitle = "Smth went wrong"
-            self.image = UIImage(named: "ErrorCase")
-        }
-    }
-
-    func newPic() {
-        var imageNumber = Int.random(in: 1...3)
-        while self.currentNameOfImage == String(imageNumber) {
-            imageNumber = Int.random(in: 1...3)
-        }
-        self.currentNameOfImage = String(imageNumber)
+        self.imageNumber = Int.random(in: 1...3)
+        self.currentImageNumber = imageNumber
         if let image = UIImage(named: "\(imageNumber)") {
             self.image = image
             self.imageTitle = "Картинка \(imageNumber)"
@@ -42,13 +28,28 @@ public class Model {
     }
 
     func tenPress() {
-        pressCount += 1
-        if pressCount % 10 == 0 {
+        let queue = DispatchQueue.global(qos: .utility)
+        self.pressCount += 1
+        if self.pressCount % 10 == 0 {
             self.image = UIImage(named: "LookingAggressively")
             self.imageTitle = "Прекроти!"
-            pressCount = 0
+            self.imageNumber = Int.random(in: 1...3)
+            self.pressCount = 0
         } else {
-            self.newPic()
+            queue.sync {
+                sleep(3)
+                while self.currentImageNumber == self.imageNumber {
+                    self.imageNumber = Int.random(in: 1...3)
+                }
+                self.currentImageNumber = self.imageNumber
+                if let image = UIImage(named: "\(self.currentImageNumber)") {
+                    self.image = image
+                    self.imageTitle = "Картинка \(self.currentImageNumber)"
+                } else {
+                    self.imageTitle = "Smth went wrong"
+                    self.image = UIImage(named: "ErrorCase")
+                }
+            }
         }
         doSometing?()
     }
