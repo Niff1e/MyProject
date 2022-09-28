@@ -10,17 +10,14 @@ import UIKit
 public class Model {
     public var imageTitle: String
     public var image: UIImage?
-    private var currentImageNumber = 0
-    private var imageNumber = 0
+    private var currentImageNumber = 1
     private var pressCount: Int = 0
     var doSometing: (() -> Void)?
 
     init() {
-        self.imageNumber = Int.random(in: 1...3)
-        self.currentImageNumber = imageNumber
-        if let image = UIImage(named: "\(imageNumber)") {
+        if let image = UIImage(named: "\(currentImageNumber)") {
             self.image = image
-            self.imageTitle = "Картинка \(imageNumber)"
+            self.imageTitle = "Картинка \(currentImageNumber)"
         } else {
             self.imageTitle = "Smth went wrong"
             self.image = UIImage(named: "ErrorCase")
@@ -28,29 +25,33 @@ public class Model {
     }
 
     func tenPress() {
-        let queue = DispatchQueue.global(qos: .utility)
+        let queue = DispatchQueue(label: "myQueue")
         self.pressCount += 1
         if self.pressCount % 10 == 0 {
             self.image = UIImage(named: "LookingAggressively")
             self.imageTitle = "Прекроти!"
-            self.imageNumber = Int.random(in: 1...3)
             self.pressCount = 0
+            self.doSometing?()
         } else {
-            queue.sync {
+            queue.async { [weak self] in
+                guard let strongSelf = self else { return }
                 sleep(3)
-                while self.currentImageNumber == self.imageNumber {
-                    self.imageNumber = Int.random(in: 1...3)
+                var imageNumber = Int.random(in: 1...3)
+                while strongSelf.currentImageNumber == imageNumber {
+                    imageNumber = Int.random(in: 1...3)
                 }
-                self.currentImageNumber = self.imageNumber
-                if let image = UIImage(named: "\(self.currentImageNumber)") {
-                    self.image = image
-                    self.imageTitle = "Картинка \(self.currentImageNumber)"
+                strongSelf.currentImageNumber = imageNumber
+                if let image = UIImage(named: "\(strongSelf.currentImageNumber)") {
+                    strongSelf.image = image
+                    strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
                 } else {
-                    self.imageTitle = "Smth went wrong"
-                    self.image = UIImage(named: "ErrorCase")
+                    strongSelf.imageTitle = "Smth went wrong"
+                    strongSelf.image = UIImage(named: "ErrorCase")
+                }
+                DispatchQueue.main.async {
+                    strongSelf.doSometing?()
                 }
             }
         }
-        doSometing?()
     }
 }
