@@ -13,8 +13,10 @@ public class Model {
     private var currentImageNumber = 1
     private var pressCount: Int = 0
     var doSometing: (() -> Void)?
+    private let queue: DispatchQueue
 
     init() {
+        self.queue = DispatchQueue(label: "myQueue")
         if let image = UIImage(named: "\(currentImageNumber)") {
             self.image = image
             self.imageTitle = "Картинка \(currentImageNumber)"
@@ -25,7 +27,6 @@ public class Model {
     }
 
     func tenPress() {
-        let queue = DispatchQueue(label: "myQueue")
         self.pressCount += 1
         if self.pressCount % 10 == 0 {
             self.image = UIImage(named: "LookingAggressively")
@@ -33,9 +34,8 @@ public class Model {
             self.pressCount = 0
             self.doSometing?()
         } else {
-            queue.async { [weak self] in
+            self.queue.async { [weak self] in
                 guard let strongSelf = self else { return }
-                sleep(3)
                 var imageNumber = Int.random(in: 1...3)
                 while strongSelf.currentImageNumber == imageNumber {
                     imageNumber = Int.random(in: 1...3)

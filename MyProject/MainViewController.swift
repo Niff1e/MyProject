@@ -38,6 +38,6 @@ class MainViewController: UIViewController {
         model.doSometing = { [weak self] in
             self?.setupModel()
         }
-        model.tenPress()
+        setupModel()
     }
 }
