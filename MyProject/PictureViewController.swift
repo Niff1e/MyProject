@@ -12,9 +12,9 @@ class PictureViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
 
-    var model: PictureControllerModel!
+    var model: PictureModel!
 
-    func setupModel() {
+    private func setupModel() {
         imageView.image = model.image
     }
 

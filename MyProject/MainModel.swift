@@ -12,11 +12,10 @@ public class Model {
     public var image: UIImage?
     private var currentImageNumber = 1
     private var pressCount: Int = 0
-    var doSometing: (() -> Void)?
-    private let queue: DispatchQueue
+    public var doSometing: (() -> Void)?
+    private let queue = DispatchQueue(label: "myQueue")
 
     init() {
-        self.queue = DispatchQueue(label: "myQueue")
         if let image = UIImage(named: "\(currentImageNumber)") {
             self.image = image
             self.imageTitle = "Картинка \(currentImageNumber)"
@@ -26,7 +25,7 @@ public class Model {
         }
     }
 
-    func tenPress() {
+    public func tenPress() {
         self.pressCount += 1
         if self.pressCount % 10 == 0 {
             self.image = UIImage(named: "LookingAggressively")

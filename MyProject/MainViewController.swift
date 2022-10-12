@@ -9,7 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController {
 
-    let model = Model()
+    private let model = Model()
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
@@ -17,7 +17,7 @@ class MainViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToPVC" {
             guard let newVC = segue.destination as? PictureViewController else { return }
-            let pictureVCmodel = PictureControllerModel()
+            let pictureVCmodel = PictureModel()
             pictureVCmodel.image = model.image
             newVC.model = pictureVCmodel
         }
@@ -27,7 +27,7 @@ class MainViewController: UIViewController {
         model.tenPress()
     }
 
-    func setupModel() {
+    private func setupModel() {
         imageView.image = model.image
         titleLabel.text = model.imageTitle
     }
