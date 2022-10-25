@@ -7,6 +7,6 @@
 
 import UIKit
 
-class PictureModel {
-    var image: UIImage?
+public class PictureModel {
+    public var image: UIImage?
 }

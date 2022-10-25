@@ -12,13 +12,13 @@ class PictureViewController: UIViewController, UIScrollViewDelegate {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var scrollView: UIScrollView!
 
-    var model: PictureModel!
+    public var model: PictureModel!
 
     private func setupModel() {
         imageView.image = model.image
     }
 
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
 
