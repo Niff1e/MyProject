@@ -53,6 +53,13 @@ class MainViewController: UIViewController {
         button.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
         button.trailingAnchor.constraint(equalTo: stackView.trailingAnchor).isActive = true
         button.bottomAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 80.0).isActive = true
+
+        button.addTarget(nil, action: #selector(buttonAction), for: .touchUpInside)
+    }
+
+    @objc func buttonAction() {
+        model.tenPress()
     }
 
     private func setupStackView() {
