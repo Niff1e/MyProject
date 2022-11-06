@@ -16,19 +16,10 @@ class MainViewController: UIViewController {
 
     private let model = Model()
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToPVC" {
-            guard let newVC = segue.destination as? PictureViewController else { return }
-            let pictureVCmodel = PictureModel()
-            pictureVCmodel.image = model.image
-            newVC.model = pictureVCmodel
-        }
-    }
-
     private func setupLabel() {
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 80.0)
-        label.numberOfLines = 1
+        label.font = UIFont.systemFont(ofSize: 75.0)
+        label.numberOfLines = 3
 
         stackView.addArrangedSubview(label)
 
@@ -40,6 +31,26 @@ class MainViewController: UIViewController {
     private func setupPicture() {
         stackView.addArrangedSubview(pictureView)
         pictureView.contentMode = .scaleAspectFit
+
+        // pictureView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
+        // pictureView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor).isActive = true
+
+        addToPictureTapGesture()
+    }
+
+    func addToPictureTapGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.tapAction(_ :)))
+        pictureView.addGestureRecognizer(tap)
+        pictureView.isUserInteractionEnabled = true
+    }
+
+    @objc func tapAction(_ sender: UITapGestureRecognizer) {
+        let newVC = PictureViewController()
+        let pictureVCmodel = PictureModel()
+        newVC.model = pictureVCmodel
+        pictureVCmodel.image = model.image
+        navigationController?.pushViewController(newVC, animated: false)
+        // show(newVC, sender: nil)
     }
 
     private func setupButton() {
@@ -63,11 +74,13 @@ class MainViewController: UIViewController {
     }
 
     private func setupStackView() {
+        view.backgroundColor = .white
         view.addSubview(stackView)
         stackView.backgroundColor = .white
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = 30
 
         stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         stackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
@@ -77,10 +90,6 @@ class MainViewController: UIViewController {
         setupLabel()
         setupPicture()
         setupButton()
-    }
-
-    @IBAction func changePicPress(_ sender: Any) {
-        model.tenPress()
     }
 
     private func setupModel() {
