@@ -24,7 +24,7 @@ class PictureViewController: UIViewController, UIScrollViewDelegate {
 
     private func setupScrollView() {
         view.addSubview(scrollView)
-        scrollView.backgroundColor = .white
+        scrollView.addSubview(imageView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
 
         scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
@@ -35,13 +35,10 @@ class PictureViewController: UIViewController, UIScrollViewDelegate {
     }
 
     private func setupImageView() {
-        scrollView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            imageView.centerYAnchor.constraint(equalTo: scrollView.centerYAnchor)
-        ])
+        imageView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 1).isActive = true
+        imageView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 1).isActive = true
+        imageView.contentMode = .scaleAspectFit
     }
 
     override func viewDidLoad() {

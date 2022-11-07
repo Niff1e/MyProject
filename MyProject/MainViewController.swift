@@ -32,9 +32,6 @@ class MainViewController: UIViewController {
         stackView.addArrangedSubview(pictureView)
         pictureView.contentMode = .scaleAspectFit
 
-        // pictureView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
-        // pictureView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor).isActive = true
-
         addToPictureTapGesture()
     }
 
@@ -49,8 +46,7 @@ class MainViewController: UIViewController {
         let pictureVCmodel = PictureModel()
         newVC.model = pictureVCmodel
         pictureVCmodel.image = model.image
-        navigationController?.pushViewController(newVC, animated: false)
-        // show(newVC, sender: nil)
+        navigationController?.pushViewController(newVC, animated: true)
     }
 
     private func setupButton() {
