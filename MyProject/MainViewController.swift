@@ -11,8 +11,8 @@ class MainViewController: UIViewController {
 
     private let model = Model()
 
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToPVC" {
@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
         }
     }
 
-    @IBAction func changePicPress(_ sender: Any) {
+    @IBAction private func changePicPress(_ sender: Any) {
         model.tenPress()
     }
 

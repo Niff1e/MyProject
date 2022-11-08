@@ -7,9 +7,9 @@
 
 import UIKit
 
-public class Model {
-    public var imageTitle: String
-    public var image: UIImage?
+class Model {
+    var imageTitle: String
+    var image: UIImage?
     private var currentImageNumber = 1
     private var pressCount: Int = 0
     public var doSometing: (() -> Void)?
