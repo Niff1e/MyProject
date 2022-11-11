@@ -8,11 +8,12 @@
 import UIKit
 
 class Model {
-    var imageTitle: String
-    var image: UIImage?
+    private(set) var imageTitle: String
+    private(set) var image: UIImage?
+    var doSometing: (() -> Void)?
+
     private var currentImageNumber = 1
     private var pressCount: Int = 0
-    public var doSometing: (() -> Void)?
     private let queue = DispatchQueue(label: "myQueue")
 
     init() {
@@ -25,7 +26,7 @@ class Model {
         }
     }
 
-    public func tenPress() {
+    func tenPress() {
         self.pressCount += 1
         if self.pressCount % 10 == 0 {
             self.image = UIImage(named: "LookingAggressively")
