@@ -7,13 +7,13 @@
 
 import UIKit
 
-public class Model {
-    public var imageTitle: String
-    public var image: UIImage?
+class FirstScreenModel {
+    var imageTitle: String
+    var image: UIImage?
     private var currentImageNumber = 1
     private var pressCount: Int = 0
-    public var doSometing: (() -> Void)?
     private let queue = DispatchQueue(label: "myQueue")
+    var doSometing: (() -> Void)?
 
     init() {
         if let image = UIImage(named: "\(currentImageNumber)") {
@@ -25,7 +25,7 @@ public class Model {
         }
     }
 
-    public func tenPress() {
+    func tenPress() {
         self.pressCount += 1
         if self.pressCount % 10 == 0 {
             self.image = UIImage(named: "LookingAggressively")
