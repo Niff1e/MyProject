@@ -7,27 +7,27 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class MainViewController: UIViewController {
 
-    let model = Model()
+    private let model = Model()
 
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var imageView: UIImageView!
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToPVC" {
             guard let newVC = segue.destination as? PictureViewController else { return }
-            let pictureVCmodel = PictureControllerModel()
+            let pictureVCmodel = PictureModel()
             pictureVCmodel.image = model.image
             newVC.model = pictureVCmodel
         }
     }
 
-    @IBAction func changePicPress(_ sender: Any) {
+    @IBAction private func changePicPress(_ sender: Any) {
         model.tenPress()
     }
 
-    func setupModel() {
+    private func setupModel() {
         imageView.image = model.image
         titleLabel.text = model.imageTitle
     }
@@ -38,6 +38,6 @@ class ViewController: UIViewController {
         model.doSometing = { [weak self] in
             self?.setupModel()
         }
-        model.tenPress()
+        setupModel()
     }
 }
