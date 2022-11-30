@@ -19,18 +19,26 @@ final class PictureView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    var imageView: UIImageView = {
+    // MARK: Private
+
+    private var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
 
-    var scrollView: UIScrollView = {
+    private var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.minimumZoomScale = 1.0
+        scrollView.maximumZoomScale = 5.0
         return scrollView
     }()
+
+    private func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return imageView
+    }
 
     private func setupPictureView() {
         self.addSubview(scrollView)
@@ -47,5 +55,15 @@ final class PictureView: UIView {
         scrollView.contentLayoutGuide.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
         scrollView.heightAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
+    }
+
+    // MARK: Internal
+
+    func setImage(image: UIImage) {
+        self.imageView.image = image
+    }
+
+    func setDelegateForScrollView(controller: UIScrollViewDelegate) {
+        self.scrollView.delegate = controller
     }
 }

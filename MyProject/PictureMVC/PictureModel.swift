@@ -7,6 +7,10 @@
 
 import UIKit
 
-class PictureModel {
-    var image: UIImage?
+final class PictureModel {
+    private(set) var image: UIImage
+
+    init(image: UIImage) {
+        self.image = image
+    }
 }

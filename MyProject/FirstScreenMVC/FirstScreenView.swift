@@ -19,7 +19,9 @@ final class FirstScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    var stackView: UIStackView = {
+    // MARK: Private
+
+    private var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.alignment = .fill
@@ -28,7 +30,7 @@ final class FirstScreenView: UIView {
         return stackView
     }()
 
-    var label: UILabel = {
+    private var label: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 75.0)
@@ -36,14 +38,14 @@ final class FirstScreenView: UIView {
         return label
     }()
 
-    var pictureView: UIImageView = {
+    private var pictureView: UIImageView = {
         let pictureView = UIImageView()
         pictureView.contentMode = .scaleAspectFit
         pictureView.isUserInteractionEnabled = true
         return pictureView
     }()
 
-    var button: UIButton = {
+    private var button: UIButton = {
         let button = UIButton()
         button.setTitle("Тыкни!", for: .normal)
         button.setTitleColor(.gray, for: .highlighted)
@@ -53,8 +55,19 @@ final class FirstScreenView: UIView {
         return button
     }()
 
+    private func setupButton() {
+        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+    }
+
+    private func setupPictureGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapAction))
+        pictureView.addGestureRecognizer(tap)
+    }
+
     private func setupStackView() {
         self.addSubview(stackView)
+        setupButton()
+        setupPictureGesture()
         stackView.addArrangedSubview(label)
         stackView.addArrangedSubview(pictureView)
         stackView.addArrangedSubview(button)
@@ -64,5 +77,28 @@ final class FirstScreenView: UIView {
         stackView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
         stackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
         button.heightAnchor.constraint(equalToConstant: 80.0).isActive = true
+    }
+
+    // MARK: Internal
+
+    var onButtonTap: (() -> Void)?
+    var onPictureTap: (() -> Void)?
+
+    func setPictureViewImage(with image: UIImage) {
+        self.pictureView.image = image
+    }
+
+    func setLabelText(with text: String) {
+        self.label.text = text
+    }
+
+    // MARK: @objc
+
+    @objc func buttonAction() {
+        self.onButtonTap?()
+    }
+
+    @objc func tapAction(_ sender: UITapGestureRecognizer) {
+        self.onPictureTap?()
     }
 }

@@ -9,27 +9,30 @@ import UIKit
 
 final class PictureViewController: UIViewController, UIScrollViewDelegate {
 
-    private var pictureView = PictureView()
-    var model: PictureModel!
-
-    private func setupModel() {
-        pictureView.imageView.image = model.image
+    init(model: PictureModel) {
+        self.model = model
+        super.init(nibName: nil, bundle: nil)
     }
 
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return pictureView.imageView
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private let pictureView = PictureView()
+    let model: PictureModel
+
+    private func setupModel() {
+        pictureView.setImage(image: model.image)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         setupModel()
     }
 
     override func loadView() {
-        pictureView.scrollView.delegate = self
-        pictureView.scrollView.minimumZoomScale = 1.0
-        pictureView.scrollView.maximumZoomScale = 5.0
+        pictureView.setDelegateForScrollView(controller: self)
+        pictureView.backgroundColor = .white
         view = pictureView
     }
 }

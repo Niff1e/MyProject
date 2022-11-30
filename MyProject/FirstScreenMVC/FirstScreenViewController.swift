@@ -9,8 +9,8 @@ import UIKit
 
 final class FirstScreenViewController: UIViewController {
 
-    var model: FirstScreenModel
-    private var firstView = FirstScreenView()
+    let model: FirstScreenModel
+    private let firstView = FirstScreenView()
 
     init(model: FirstScreenModel) {
         self.model = model
@@ -21,21 +21,9 @@ final class FirstScreenViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func tapAction(_ sender: UITapGestureRecognizer) {
-        let newVC = PictureViewController()
-        let pictureVCmodel = PictureModel()
-        newVC.model = pictureVCmodel
-        pictureVCmodel.image = model.image
-        navigationController?.pushViewController(newVC, animated: true)
-    }
-
-    @objc func buttonAction() {
-        model.tenPress()
-    }
-
     private func setupModel() {
-        firstView.pictureView.image = model.image
-        firstView.label.text = model.imageTitle
+        firstView.setPictureViewImage(with: model.image)
+        firstView.setLabelText(with: model.imageTitle)
     }
 
     override func viewDidLoad() {
@@ -49,9 +37,15 @@ final class FirstScreenViewController: UIViewController {
     }
 
     override func loadView() {
-        firstView.button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapAction(_:)))
-        firstView.pictureView.addGestureRecognizer(tap)
+        firstView.onButtonTap = { [weak self] in
+            self?.model.tenPress()
+        }
+
+        firstView.onPictureTap = { [weak self] in
+            let pictureVCmodel = PictureModel(image: (self?.model.image)!)
+            let newVC = PictureViewController(model: pictureVCmodel)
+            self?.navigationController?.pushViewController(newVC, animated: true)
+        }
         view = firstView
     }
 }

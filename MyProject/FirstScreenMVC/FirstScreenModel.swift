@@ -7,9 +7,9 @@
 
 import UIKit
 
-class FirstScreenModel {
+final class FirstScreenModel {
     var imageTitle: String
-    var image: UIImage?
+    var image: UIImage
     private var currentImageNumber = 1
     private var pressCount: Int = 0
     private let queue = DispatchQueue(label: "myQueue")
@@ -21,14 +21,14 @@ class FirstScreenModel {
             self.imageTitle = "Картинка \(currentImageNumber)"
         } else {
             self.imageTitle = "Smth went wrong"
-            self.image = UIImage(named: "ErrorCase")
+            self.image = UIImage(named: "ErrorCase")!
         }
     }
 
     func tenPress() {
         self.pressCount += 1
         if self.pressCount % 10 == 0 {
-            self.image = UIImage(named: "LookingAggressively")
+            self.image = UIImage(named: "LookingAggressively")!
             self.imageTitle = "Прекроти!"
             self.pressCount = 0
             self.doSometing?()
@@ -45,7 +45,7 @@ class FirstScreenModel {
                     strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
                 } else {
                     strongSelf.imageTitle = "Smth went wrong"
-                    strongSelf.image = UIImage(named: "ErrorCase")
+                    strongSelf.image = UIImage(named: "ErrorCase")!
                 }
                 DispatchQueue.main.async {
                     strongSelf.doSometing?()
