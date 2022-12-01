@@ -25,7 +25,7 @@ final class PictureViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: - Private methods
 
-    private func setupModel() {
+    private func updateView() {
         pictureView.setImage(image: model.image)
     }
 
@@ -33,11 +33,11 @@ final class PictureViewController: UIViewController, UIScrollViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupModel()
+        updateView()
     }
 
     override func loadView() {
-        pictureView.backgroundColor = .white
+        // pictureView.backgroundColor = .white
         view = pictureView
     }
 }

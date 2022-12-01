@@ -27,7 +27,7 @@ final class FirstScreenViewController: UIViewController {
 
     // MARK: - Private methods
 
-    private func setupModel() {
+    private func updateView() {
         firstView.setPictureViewImage(with: model.image)
         firstView.setLabelText(with: model.imageTitle)
     }
@@ -40,9 +40,9 @@ final class FirstScreenViewController: UIViewController {
 
         model.doSometing = { [weak self] in
             guard let strongSelf = self else { return }
-            strongSelf.setupModel()
+            strongSelf.updateView()
         }
-        setupModel()
+        updateView()
     }
 
     override func loadView() {

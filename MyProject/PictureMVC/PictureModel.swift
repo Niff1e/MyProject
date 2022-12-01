@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class PictureModel {
+struct PictureModel {
     private(set) var image: UIImage
 
     init(image: UIImage) {

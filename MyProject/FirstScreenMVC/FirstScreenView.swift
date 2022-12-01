@@ -12,6 +12,8 @@ final class FirstScreenView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setupButton()
+        setupPictureGesture()
         setupStackView()
     }
 
@@ -73,8 +75,6 @@ final class FirstScreenView: UIView {
 
     private func setupStackView() {
         self.addSubview(stackView)
-        setupButton()
-        setupPictureGesture()
         stackView.addArrangedSubview(label)
         stackView.addArrangedSubview(pictureView)
         stackView.addArrangedSubview(button)

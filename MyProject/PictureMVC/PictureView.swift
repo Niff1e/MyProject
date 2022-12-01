@@ -13,7 +13,8 @@ final class PictureView: UIView, UIScrollViewDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupPictureView()
-        scrollView.delegate = self    }
+        scrollView.delegate = self
+    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -45,6 +46,7 @@ final class PictureView: UIView, UIScrollViewDelegate {
     // MARK: - Private methods
 
     private func setupPictureView() {
+        self.backgroundColor = .white
         self.addSubview(scrollView)
         scrollView.addSubview(imageView)
 
