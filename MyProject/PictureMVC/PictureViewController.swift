@@ -18,12 +18,18 @@ final class PictureViewController: UIViewController, UIScrollViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Private properties
+
     private let pictureView = PictureView()
-    let model: PictureModel
+    private let model: PictureModel
+
+    // MARK: - Private methods
 
     private func setupModel() {
         pictureView.setImage(image: model.image)
     }
+
+    // MARK: - View lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +37,6 @@ final class PictureViewController: UIViewController, UIScrollViewDelegate {
     }
 
     override func loadView() {
-        pictureView.setDelegateForScrollView(controller: self)
         pictureView.backgroundColor = .white
         view = pictureView
     }

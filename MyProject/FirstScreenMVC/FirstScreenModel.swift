@@ -8,12 +8,23 @@
 import UIKit
 
 final class FirstScreenModel {
-    var imageTitle: String
-    var image: UIImage
+
+    // MARK: - Private(set) properties
+
+    private(set) var imageTitle: String
+    private(set) var image: UIImage
+
+    // MARK: - Internal properties
+
+    var doSometing: (() -> Void)?
+
+    // MARK: - Private properties
+
     private var currentImageNumber = 1
     private var pressCount: Int = 0
     private let queue = DispatchQueue(label: "myQueue")
-    var doSometing: (() -> Void)?
+
+    // MARK: -
 
     init() {
         if let image = UIImage(named: "\(currentImageNumber)") {
@@ -24,6 +35,8 @@ final class FirstScreenModel {
             self.image = UIImage(named: "ErrorCase")!
         }
     }
+
+    // MARK: - Internal methods
 
     func tenPress() {
         self.pressCount += 1

@@ -8,18 +8,18 @@
 import Foundation
 import UIKit
 
-final class PictureView: UIView {
+final class PictureView: UIView, UIScrollViewDelegate {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupPictureView()
-    }
+        scrollView.delegate = self    }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: Private
+    // MARK: Private properties
 
     private var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -36,34 +36,36 @@ final class PictureView: UIView {
         return scrollView
     }()
 
-    private func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    // MARK: - ScrollView delegate methods
+
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
+
+    // MARK: - Private methods
 
     private func setupPictureView() {
         self.addSubview(scrollView)
         scrollView.addSubview(imageView)
 
-        scrollView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        scrollView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
 
-        scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: imageView.topAnchor).isActive = true
-        scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: imageView.leadingAnchor).isActive = true
-        scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: imageView.bottomAnchor).isActive = true
-        scrollView.contentLayoutGuide.trailingAnchor.constraint(equalTo: imageView.trailingAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
-        scrollView.heightAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
+            scrollView.contentLayoutGuide.topAnchor.constraint(equalTo: imageView.topAnchor),
+            scrollView.contentLayoutGuide.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: imageView.bottomAnchor),
+            scrollView.contentLayoutGuide.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
+            scrollView.widthAnchor.constraint(equalTo: imageView.widthAnchor),
+            scrollView.heightAnchor.constraint(equalTo: imageView.heightAnchor)
+        ])
     }
 
-    // MARK: Internal
+    // MARK: - Internal methods
 
     func setImage(image: UIImage) {
         self.imageView.image = image
-    }
-
-    func setDelegateForScrollView(controller: UIScrollViewDelegate) {
-        self.scrollView.delegate = controller
     }
 }

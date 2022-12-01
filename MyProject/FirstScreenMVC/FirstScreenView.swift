@@ -19,7 +19,7 @@ final class FirstScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: Private
+    // MARK: - Private properties
 
     private var stackView: UIStackView = {
         let stackView = UIStackView()
@@ -55,6 +55,13 @@ final class FirstScreenView: UIView {
         return button
     }()
 
+    // MARK: - Internal properties
+
+    var onButtonTap: (() -> Void)?
+    var onPictureTap: (() -> Void)?
+
+    // MARK: - Private methods
+
     private func setupButton() {
         button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
     }
@@ -72,17 +79,16 @@ final class FirstScreenView: UIView {
         stackView.addArrangedSubview(pictureView)
         stackView.addArrangedSubview(button)
 
-        stackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 80.0).isActive = true
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            button.heightAnchor.constraint(equalToConstant: 80.0)
+        ])
     }
 
-    // MARK: Internal
-
-    var onButtonTap: (() -> Void)?
-    var onPictureTap: (() -> Void)?
+    // MARK: - Internal methods
 
     func setPictureViewImage(with image: UIImage) {
         self.pictureView.image = image
@@ -92,7 +98,7 @@ final class FirstScreenView: UIView {
         self.label.text = text
     }
 
-    // MARK: @objc
+    // MARK: - @objc
 
     @objc func buttonAction() {
         self.onButtonTap?()
