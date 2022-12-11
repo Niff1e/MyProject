@@ -37,7 +37,6 @@ final class PictureViewController: UIViewController, UIScrollViewDelegate {
     }
 
     override func loadView() {
-        // pictureView.backgroundColor = .white
         view = pictureView
     }
 }
