@@ -7,14 +7,24 @@
 
 import UIKit
 
-class Model {
+final class FirstScreenModel {
+
+    // MARK: - Private(set) properties
+
     private(set) var imageTitle: String
-    private(set) var image: UIImage?
+    private(set) var image: UIImage
+
+    // MARK: - Internal properties
+
     var doSometing: (() -> Void)?
+
+    // MARK: - Private properties
 
     private var currentImageNumber = 1
     private var pressCount: Int = 0
     private let queue = DispatchQueue(label: "myQueue")
+
+    // MARK: -
 
     init() {
         if let image = UIImage(named: "\(currentImageNumber)") {
@@ -22,14 +32,16 @@ class Model {
             self.imageTitle = "Картинка \(currentImageNumber)"
         } else {
             self.imageTitle = "Smth went wrong"
-            self.image = UIImage(named: "ErrorCase")
+            self.image = UIImage(named: "ErrorCase")!
         }
     }
+
+    // MARK: - Internal methods
 
     func tenPress() {
         self.pressCount += 1
         if self.pressCount % 10 == 0 {
-            self.image = UIImage(named: "LookingAggressively")
+            self.image = UIImage(named: "LookingAggressively")!
             self.imageTitle = "Прекроти!"
             self.pressCount = 0
             self.doSometing?()
@@ -46,7 +58,7 @@ class Model {
                     strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
                 } else {
                     strongSelf.imageTitle = "Smth went wrong"
-                    strongSelf.image = UIImage(named: "ErrorCase")
+                    strongSelf.image = UIImage(named: "ErrorCase")!
                 }
                 DispatchQueue.main.async {
                     strongSelf.doSometing?()
