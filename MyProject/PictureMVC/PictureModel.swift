@@ -8,7 +8,7 @@
 import UIKit
 
 struct PictureModel {
-    private(set) var image: UIImage
+    let image: UIImage
 
     init(image: UIImage) {
         self.image = image
