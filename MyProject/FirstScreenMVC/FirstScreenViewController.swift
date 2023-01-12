@@ -42,7 +42,15 @@ final class FirstScreenViewController: UIViewController {
             guard let strongSelf = self else { return }
             strongSelf.updateView()
         }
-        updateView()
+        model.tenPress()
+        model.whenFinishDownload = { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.firstView.stopAnimatingIndicator()
+        }
+        model.whenStartDownload = { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.firstView.startAnimatingIndicator()
+        }
     }
 
     override func loadView() {

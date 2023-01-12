@@ -56,6 +56,15 @@ final class FirstScreenView: UIView {
         button.backgroundColor = .green
         return button
     }()
+    
+    private var indicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.color = .black
+        indicator.style = .large
+        indicator.stopAnimating()
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
 
     // MARK: - Internal properties
 
@@ -78,6 +87,8 @@ final class FirstScreenView: UIView {
         stackView.addArrangedSubview(label)
         stackView.addArrangedSubview(pictureView)
         stackView.addArrangedSubview(button)
+        stackView.addSubview(indicator)
+        //indicator.bounds = pictureView.bounds
 
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
@@ -96,6 +107,20 @@ final class FirstScreenView: UIView {
 
     func setLabelText(with text: String) {
         self.label.text = text
+    }
+    
+    func startAnimatingIndicator() {
+        DispatchQueue.main.async {
+            self.indicator.startAnimating()
+            self.pictureView.alpha = 0
+        }
+    }
+    
+    func stopAnimatingIndicator() {
+        DispatchQueue.main.async {
+            self.indicator.stopAnimating()
+            self.pictureView.alpha = 1
+        }
     }
 
     // MARK: - @objc
