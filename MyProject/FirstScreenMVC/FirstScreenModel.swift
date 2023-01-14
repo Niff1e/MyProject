@@ -26,7 +26,7 @@ final class FirstScreenModel {
     private var pressCount: Int = 0
     private let queue = DispatchQueue(label: "myQueue")
     private let urls = [
-        "https://mobimg.b-cdn.net/v3/fetch/9d/9db2d4683d92f5f2045e9142fbd82633.jpeg",
+        "https://avatars.mds.yandex.net/i?id=80f33c4148247a3893d80500fc49c7ff728ccfe1-8497134-images-thumbs&n=13",
         "https://phonoteka.org/uploads/posts/2021-06/1624471479_22-phonoteka_org-p-anime-oboi-gorizontalnie-krasivo-25.jpg",
         "https://avatars.mds.yandex.net/i?id=2931c05db613d78b6eaf2f7818eca3f8-5869745-images-thumbs&n=13"
     ]
@@ -57,6 +57,7 @@ final class FirstScreenModel {
     // MARK: - Internal methods
 
     func tenPress() {
+        
         self.pressCount += 1
         if self.pressCount % 10 == 0 {
             self.image = UIImage(named: "LookingAggressively")!
@@ -71,39 +72,56 @@ final class FirstScreenModel {
                     imageNumber = Int.random(in: 1...3)
                 }
                 strongSelf.currentImageNumber = imageNumber
+                strongSelf.whenStartDownload?()
                 let stringUrl = strongSelf.urls[strongSelf.currentImageNumber-1]
-                let isContain = strongSelf.urlsAndPictures.keys.contains(where: { element in
-                    if stringUrl == element {
-                        return true
-                    } else {
-                        return false
+                guard let url = URL(string: stringUrl) else { return }
+                let task = URLSession.shared.dataTask(with: url) { data, response, error in
+                    guard error == nil else { return }
+                    guard let data = data else { return }
+                    guard let downloadImage = UIImage(data: data) else { return }
+                    DispatchQueue.main.async {
+                        strongSelf.image = downloadImage
+                        strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
+                        strongSelf.doSometing?()
+                        // sleep(3)
+                        strongSelf.whenFinishDownload?()
                     }
-                })
-                if isContain {
-                    guard let picture = strongSelf.urlsAndPictures[stringUrl] else { return }
-                    strongSelf.image = picture
-                    strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
-                } else {
-                    strongSelf.whenStartDownload?()
-                    guard let url = URL(string: stringUrl) else { return }
-                    strongSelf.image = strongSelf.downloadImage(from: url)
-                    strongSelf.urlsAndPictures[stringUrl] = strongSelf.image
-                    strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
-                    strongSelf.whenFinishDownload?()
                 }
-//                if let image = UIImage(named: "\(strongSelf.currentImageNumber)") {
-//                    strongSelf.image = image
-//                    strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
-//                } else {
-//                    strongSelf.imageTitle = "Smth went wrong"
-//                    strongSelf.image = UIImage(named: "ErrorCase")!
-//                }
-                DispatchQueue.main.async {
-                    strongSelf.doSometing?()
-                }
+                task.resume()
             }
         }
     }
+//                let stringUrl = strongSelf.urls[strongSelf.currentImageNumber-1]
+//                let isContain = strongSelf.urlsAndPictures.keys.contains(where: { element in
+//                    if stringUrl == element {
+//                        return true
+//                    } else {
+//                        return false
+//                    }
+//                })
+//                if isContain {
+//                    guard let picture = strongSelf.urlsAndPictures[stringUrl] else { return }
+//                    strongSelf.image = picture
+//                    strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
+//                } else {
+//                    strongSelf.whenStartDownload?()
+//                    guard let url = URL(string: stringUrl) else { return }
+//                    strongSelf.image = strongSelf.downloadImage(from: url)
+//                    strongSelf.urlsAndPictures[stringUrl] = strongSelf.image
+//                    strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
+//                }
+                
+                
+                
+                
+                //                if let image = UIImage(named: "\(strongSelf.currentImageNumber)") {
+                //                    strongSelf.image = image
+                //                    strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
+                //                } else {
+                //                    strongSelf.imageTitle = "Smth went wrong"
+                //                    strongSelf.image = UIImage(named: "ErrorCase")!
+                //                }
+
     
     private func downloadImage(from url: URL) -> UIImage {
         var image = UIImage()

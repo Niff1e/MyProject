@@ -62,7 +62,9 @@ final class FirstScreenView: UIView {
         indicator.color = .black
         indicator.style = .large
         indicator.stopAnimating()
+        indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.hidesWhenStopped = true
+        indicator.alpha = 0
         return indicator
     }()
 
@@ -87,15 +89,18 @@ final class FirstScreenView: UIView {
         stackView.addArrangedSubview(label)
         stackView.addArrangedSubview(pictureView)
         stackView.addArrangedSubview(button)
-        stackView.addSubview(indicator)
-        //indicator.bounds = pictureView.bounds
+        self.addSubview(indicator)
 
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-            button.heightAnchor.constraint(equalToConstant: 80.0)
+            button.heightAnchor.constraint(equalToConstant: 80.0),
+            indicator.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
+            indicator.centerYAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerYAnchor, constant: -80.0),
+            indicator.heightAnchor.constraint(equalToConstant: 100.0),
+            indicator.widthAnchor.constraint(equalToConstant: 100.0)
         ])
     }
 
@@ -113,6 +118,8 @@ final class FirstScreenView: UIView {
         DispatchQueue.main.async {
             self.indicator.startAnimating()
             self.pictureView.alpha = 0
+            self.label.alpha = 0
+            self.indicator.alpha = 1
         }
     }
     
@@ -120,6 +127,8 @@ final class FirstScreenView: UIView {
         DispatchQueue.main.async {
             self.indicator.stopAnimating()
             self.pictureView.alpha = 1
+            self.label.alpha = 1
+            self.indicator.alpha = 0
         }
     }
 
