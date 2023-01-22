@@ -16,7 +16,7 @@ final class FirstScreenModel {
 
     // MARK: - Internal properties
 
-    var doSometing: (() -> Void)?
+    var updateView: (() -> Void)?
     var whenStartDownload: (() -> Void)?
     var whenFinishDownload: (() -> Void)?
 
@@ -30,7 +30,6 @@ final class FirstScreenModel {
         "https://phonoteka.org/uploads/posts/2021-06/1624471479_22-phonoteka_org-p-anime-oboi-gorizontalnie-krasivo-25.jpg",
         "https://avatars.mds.yandex.net/i?id=2931c05db613d78b6eaf2f7818eca3f8-5869745-images-thumbs&n=13"
     ]
-    private var urlsAndPictures: [String : UIImage] = [:]
 
     // MARK: -
 
@@ -57,13 +56,13 @@ final class FirstScreenModel {
     // MARK: - Internal methods
 
     func tenPress() {
-        
+
         self.pressCount += 1
         if self.pressCount % 10 == 0 {
             self.image = UIImage(named: "LookingAggressively")!
             self.imageTitle = "Прекроти!"
             self.pressCount = 0
-            self.doSometing?()
+            self.updateView?()
         } else {
             self.queue.async { [weak self] in
                 guard let strongSelf = self else { return }
@@ -73,24 +72,45 @@ final class FirstScreenModel {
                 }
                 strongSelf.currentImageNumber = imageNumber
                 strongSelf.whenStartDownload?()
-                let stringUrl = strongSelf.urls[strongSelf.currentImageNumber-1]
-                guard let url = URL(string: stringUrl) else { return }
-                let task = URLSession.shared.dataTask(with: url) { data, response, error in
-                    guard error == nil else { return }
-                    guard let data = data else { return }
-                    guard let downloadImage = UIImage(data: data) else { return }
-                    DispatchQueue.main.async {
-                        strongSelf.image = downloadImage
-                        strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
-                        strongSelf.doSometing?()
-                        // sleep(3)
-                        strongSelf.whenFinishDownload?()
-                    }
+                strongSelf.downloadImage(withNumberInArray: strongSelf.currentImageNumber)
+                DispatchQueue.main.async { [weak self] in
+                    sleep(3)
+                    self?.updateView?()
                 }
-                task.resume()
+                strongSelf.whenFinishDownload?()
             }
         }
     }
+
+    private func downloadImage(withNumberInArray number: Int) {
+        let stringUrl = self.urls[number - 1]
+        guard let url = URL(string: stringUrl) else { return }
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            guard error == nil else { return }
+            guard let data = data else { return }
+            guard let image = UIImage(data: data) else { return }
+            DispatchQueue.main.async { [weak self] in
+                self?.image = image
+                self?.imageTitle = "Картинка \(number)"
+            }
+        }.resume()
+    }
+}
+
+//                let task = URLSession.shared.dataTask(with: url) { data, response, error in
+//                    guard error == nil else { return }
+//                    guard let data = data else { return }
+//                    guard let downloadImage = UIImage(data: data) else { return }
+//                    DispatchQueue.main.async {
+//                        strongSelf.image = downloadImage
+//                        strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
+//                        strongSelf.doSometing?()
+//                         sleep(3)
+//                        strongSelf.whenFinishDownload?()
+//                    }
+//                }
+//                task.resume()
+//
 //                let stringUrl = strongSelf.urls[strongSelf.currentImageNumber-1]
 //                let isContain = strongSelf.urlsAndPictures.keys.contains(where: { element in
 //                    if stringUrl == element {
@@ -99,39 +119,11 @@ final class FirstScreenModel {
 //                        return false
 //                    }
 //                })
-//                if isContain {
-//                    guard let picture = strongSelf.urlsAndPictures[stringUrl] else { return }
-//                    strongSelf.image = picture
+//
+//                if let image = UIImage(named: "\(strongSelf.currentImageNumber)") {
+//                    strongSelf.image = image
 //                    strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
 //                } else {
-//                    strongSelf.whenStartDownload?()
-//                    guard let url = URL(string: stringUrl) else { return }
-//                    strongSelf.image = strongSelf.downloadImage(from: url)
-//                    strongSelf.urlsAndPictures[stringUrl] = strongSelf.image
-//                    strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
+//                    strongSelf.imageTitle = "Smth went wrong"
+//                    strongSelf.image = UIImage(named: "ErrorCase")!
 //                }
-                
-                
-                
-                
-                //                if let image = UIImage(named: "\(strongSelf.currentImageNumber)") {
-                //                    strongSelf.image = image
-                //                    strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
-                //                } else {
-                //                    strongSelf.imageTitle = "Smth went wrong"
-                //                    strongSelf.image = UIImage(named: "ErrorCase")!
-                //                }
-
-    
-    private func downloadImage(from url: URL) -> UIImage {
-        var image = UIImage()
-        let task = URLSession.shared.dataTask(with: url) { data, response, error in
-            guard error == nil else { return }
-            guard let data = data else { return }
-            guard let downloadImage = UIImage(data: data) else { return }
-            image = downloadImage
-        }
-        task.resume()
-        return image
-    }
-}

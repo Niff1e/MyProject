@@ -35,6 +35,7 @@ final class FirstScreenView: UIView {
     private var label: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 75.0)
         label.numberOfLines = 3
         return label
@@ -43,6 +44,7 @@ final class FirstScreenView: UIView {
     private var pictureView: UIImageView = {
         let pictureView = UIImageView()
         pictureView.contentMode = .scaleAspectFit
+        pictureView.translatesAutoresizingMaskIntoConstraints = false
         pictureView.isUserInteractionEnabled = true
         return pictureView
     }()
@@ -51,6 +53,7 @@ final class FirstScreenView: UIView {
         let button = UIButton()
         button.setTitle("Тыкни!", for: .normal)
         button.setTitleColor(.gray, for: .highlighted)
+        
         button.titleLabel?.font = UIFont.systemFont(ofSize: 45.0)
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .green
@@ -63,7 +66,7 @@ final class FirstScreenView: UIView {
         indicator.style = .large
         indicator.stopAnimating()
         indicator.translatesAutoresizingMaskIntoConstraints = false
-        indicator.hidesWhenStopped = true
+        // indicator.hidesWhenStopped = true
         indicator.alpha = 0
         return indicator
     }()
@@ -115,20 +118,20 @@ final class FirstScreenView: UIView {
     }
     
     func startAnimatingIndicator() {
-        DispatchQueue.main.async {
-            self.indicator.startAnimating()
-            self.pictureView.alpha = 0
-            self.label.alpha = 0
-            self.indicator.alpha = 1
+        DispatchQueue.main.async { [weak self] in
+            self?.indicator.startAnimating()
+            self?.pictureView.alpha = 0
+            self?.label.alpha = 0
+            self?.indicator.alpha = 1
         }
     }
     
     func stopAnimatingIndicator() {
-        DispatchQueue.main.async {
-            self.indicator.stopAnimating()
-            self.pictureView.alpha = 1
-            self.label.alpha = 1
-            self.indicator.alpha = 0
+        DispatchQueue.main.async { [weak self] in
+            self?.indicator.stopAnimating()
+            self?.pictureView.alpha = 1
+            self?.label.alpha = 1
+            self?.indicator.alpha = 0
         }
     }
 

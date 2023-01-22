@@ -38,11 +38,10 @@ final class FirstScreenViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
 
-        model.doSometing = { [weak self] in
+        model.updateView = { [weak self] in
             guard let strongSelf = self else { return }
             strongSelf.updateView()
         }
-        model.tenPress()
         model.whenFinishDownload = { [weak self] in
             guard let strongSelf = self else { return }
             strongSelf.firstView.stopAnimatingIndicator()
@@ -51,6 +50,7 @@ final class FirstScreenViewController: UIViewController {
             guard let strongSelf = self else { return }
             strongSelf.firstView.startAnimatingIndicator()
         }
+        model.tenPress()
     }
 
     override func loadView() {
