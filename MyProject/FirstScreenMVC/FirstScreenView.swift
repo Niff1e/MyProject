@@ -66,8 +66,8 @@ final class FirstScreenView: UIView {
         indicator.style = .large
         indicator.stopAnimating()
         indicator.translatesAutoresizingMaskIntoConstraints = false
-        // indicator.hidesWhenStopped = true
-        indicator.alpha = 0
+        indicator.hidesWhenStopped = true
+        // indicator.alpha = 0
         return indicator
     }()
 
@@ -118,21 +118,17 @@ final class FirstScreenView: UIView {
     }
     
     func startAnimatingIndicator() {
-        DispatchQueue.main.async { [weak self] in
-            self?.indicator.startAnimating()
-            self?.pictureView.alpha = 0
-            self?.label.alpha = 0
-            self?.indicator.alpha = 1
-        }
+        self.indicator.startAnimating()
+        self.pictureView.alpha = 0
+        self.label.alpha = 0
+        // self.indicator.alpha = 1
     }
     
     func stopAnimatingIndicator() {
-        DispatchQueue.main.async { [weak self] in
-            self?.indicator.stopAnimating()
-            self?.pictureView.alpha = 1
-            self?.label.alpha = 1
-            self?.indicator.alpha = 0
-        }
+        self.indicator.stopAnimating()
+        self.pictureView.alpha = 1
+        self.label.alpha = 1
+        // self.indicator.alpha = 0
     }
 
     // MARK: - @objc

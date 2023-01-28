@@ -56,7 +56,6 @@ final class FirstScreenModel {
     // MARK: - Internal methods
 
     func tenPress() {
-
         self.pressCount += 1
         if self.pressCount % 10 == 0 {
             self.image = UIImage(named: "LookingAggressively")!
@@ -64,20 +63,24 @@ final class FirstScreenModel {
             self.pressCount = 0
             self.updateView?()
         } else {
-            self.queue.async { [weak self] in
+            self.queue.sync { [weak self] in
                 guard let strongSelf = self else { return }
                 var imageNumber = Int.random(in: 1...3)
                 while strongSelf.currentImageNumber == imageNumber {
                     imageNumber = Int.random(in: 1...3)
                 }
                 strongSelf.currentImageNumber = imageNumber
-                strongSelf.whenStartDownload?()
-                strongSelf.downloadImage(withNumberInArray: strongSelf.currentImageNumber)
+                
                 DispatchQueue.main.async { [weak self] in
+                    self?.whenStartDownload?()
                     sleep(3)
-                    self?.updateView?()
                 }
-                strongSelf.whenFinishDownload?()
+                self?.downloadImage(withNumberInArray: strongSelf.currentImageNumber)
+                self?.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
+                DispatchQueue.main.async { [weak self] in
+                    self?.updateView?()
+                    self?.whenFinishDownload?()
+                }
             }
         }
     }
@@ -89,41 +92,8 @@ final class FirstScreenModel {
             guard error == nil else { return }
             guard let data = data else { return }
             guard let image = UIImage(data: data) else { return }
-            DispatchQueue.main.async { [weak self] in
-                self?.image = image
-                self?.imageTitle = "Картинка \(number)"
-            }
-        }.resume()
+            self.image = image
+        }
+        task.resume()
     }
 }
-
-//                let task = URLSession.shared.dataTask(with: url) { data, response, error in
-//                    guard error == nil else { return }
-//                    guard let data = data else { return }
-//                    guard let downloadImage = UIImage(data: data) else { return }
-//                    DispatchQueue.main.async {
-//                        strongSelf.image = downloadImage
-//                        strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
-//                        strongSelf.doSometing?()
-//                         sleep(3)
-//                        strongSelf.whenFinishDownload?()
-//                    }
-//                }
-//                task.resume()
-//
-//                let stringUrl = strongSelf.urls[strongSelf.currentImageNumber-1]
-//                let isContain = strongSelf.urlsAndPictures.keys.contains(where: { element in
-//                    if stringUrl == element {
-//                        return true
-//                    } else {
-//                        return false
-//                    }
-//                })
-//
-//                if let image = UIImage(named: "\(strongSelf.currentImageNumber)") {
-//                    strongSelf.image = image
-//                    strongSelf.imageTitle = "Картинка \(strongSelf.currentImageNumber)"
-//                } else {
-//                    strongSelf.imageTitle = "Smth went wrong"
-//                    strongSelf.image = UIImage(named: "ErrorCase")!
-//                }
