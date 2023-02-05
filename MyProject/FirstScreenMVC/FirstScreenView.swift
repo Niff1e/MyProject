@@ -53,21 +53,19 @@ final class FirstScreenView: UIView {
         let button = UIButton()
         button.setTitle("Тыкни!", for: .normal)
         button.setTitleColor(.gray, for: .highlighted)
-        
         button.titleLabel?.font = UIFont.systemFont(ofSize: 45.0)
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .green
         return button
     }()
-    
+
     private var indicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
         indicator.color = .black
         indicator.style = .large
         indicator.stopAnimating()
         indicator.translatesAutoresizingMaskIntoConstraints = false
-        indicator.hidesWhenStopped = true
-        // indicator.alpha = 0
+        indicator.alpha = 0
         return indicator
     }()
 
@@ -116,19 +114,23 @@ final class FirstScreenView: UIView {
     func setLabelText(with text: String) {
         self.label.text = text
     }
-    
+
     func startAnimatingIndicator() {
-        self.indicator.startAnimating()
+        self.button.isUserInteractionEnabled = false
+        self.button.isHighlighted = true
         self.pictureView.alpha = 0
         self.label.alpha = 0
-        // self.indicator.alpha = 1
+        self.indicator.alpha = 1
+        self.indicator.startAnimating()
     }
-    
+
     func stopAnimatingIndicator() {
         self.indicator.stopAnimating()
         self.pictureView.alpha = 1
         self.label.alpha = 1
-        // self.indicator.alpha = 0
+        self.indicator.alpha = 0
+        self.button.isHighlighted = false
+        self.button.isUserInteractionEnabled = true
     }
 
     // MARK: - @objc

@@ -38,6 +38,10 @@ final class FirstScreenViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
 
+        if model.image == nil {
+            self.firstView.startAnimatingIndicator()
+        }
+
         model.updateView = { [weak self] in
             guard let strongSelf = self else { return }
             strongSelf.updateView()
