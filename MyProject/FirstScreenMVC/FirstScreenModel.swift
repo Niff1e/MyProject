@@ -12,7 +12,7 @@ final class FirstScreenModel {
     // MARK: - Private(set) properties
 
     private(set) var imageTitle: String = ""
-    private(set) var image: UIImage = .init()
+    private(set) var image: UIImage?
 
     // MARK: - Internal properties
 
@@ -24,7 +24,6 @@ final class FirstScreenModel {
 
     private var currentImageNumber = 1
     private var pressCount: Int = 0
-    private let queue = DispatchQueue(label: "myQueue")
     private let urls = [
         "https://s00.yaplakal.com/pics/pics_original/2/7/5/17247572.jpg",
         "https://avatars.mds.yandex.net/i?id=b451f406c5f64c0072b8bfefbbc85b95_l-4817585-images-thumbs&n=27&h=384&w=480",
@@ -44,13 +43,15 @@ final class FirstScreenModel {
         } else {
             let strongSelf = self
             var imageNumber = Int.random(in: 1...urls.count)
-            while strongSelf.currentImageNumber == imageNumber {
-                imageNumber = Int.random(in: 1...urls.count)
+            if urls.count == 1 {
+                imageNumber = urls.count
+            } else {
+                while strongSelf.currentImageNumber == imageNumber {
+                    imageNumber = Int.random(in: 1...urls.count)
+                }
             }
             strongSelf.currentImageNumber = imageNumber
-            DispatchQueue.main.async { [weak self] in
-                self?.whenStartDownload?()
-            }
+            self.whenStartDownload?()
             self.downloadImage(withNumberInArray: strongSelf.currentImageNumber)
         }
     }

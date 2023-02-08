@@ -28,7 +28,8 @@ final class FirstScreenViewController: UIViewController {
     // MARK: - Private methods
 
     private func updateView() {
-        firstView.setPictureViewImage(with: model.image)
+        guard let image = model.image else { return }
+        firstView.setPictureViewImage(with: image)
         firstView.setLabelText(with: model.imageTitle)
     }
 
@@ -65,7 +66,8 @@ final class FirstScreenViewController: UIViewController {
 
         firstView.onPictureTap = { [weak self] in
             guard let strongSelf = self else { return }
-            let pictureVCmodel = PictureModel(image: strongSelf.model.image)
+            guard let image = strongSelf.model.image else { return }
+            let pictureVCmodel = PictureModel(image: image)
             let newVC = PictureViewController(model: pictureVCmodel)
             strongSelf.navigationController?.pushViewController(newVC, animated: true)
         }
